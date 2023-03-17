@@ -3,7 +3,7 @@
     padding: 0;
     transition: 0.5s all ease;
     font-family: "SFBold";
-    color: white;
+    color: black;
 }
 
 body {
@@ -13,7 +13,7 @@ body {
 }
 
 .container {
-    background-color: #0a0a0faf;
+    background-color: #0a0a0f2c;
 }
 
 .containerw {

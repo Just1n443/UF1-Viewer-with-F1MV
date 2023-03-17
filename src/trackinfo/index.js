@@ -142,7 +142,14 @@ function setSession() {
     statusElement.className = `${pClass} ${color}`;
 
     const sessionNameElement = document.getElementById("session-name");
-    sessionNameElement.textContent = sessionInfo.Name.toUpperCase();
+    console.log(sessionInfo.Name)
+    if(sessionInfo.Name.toUpperCase().includes("PRACTICE")){
+        
+        sessionNameElement.textContent = "FP"
+    }else{
+        sessionNameElement.textContent = sessionInfo.Name.toUpperCase();
+    }
+    
 }
 
 // Setting the timers for the current session
