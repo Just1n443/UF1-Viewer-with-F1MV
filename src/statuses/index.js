@@ -75,12 +75,20 @@ function setFullStatus() {
 
 let pastRaceControlMessages = [];
 function setTrackSector() {
+    if(parseInt(trackStatus.Status) == 1){
+        const allSectorElements = document.getElementsByClassName("status");
+
+            for (const sectorElement of allSectorElements) {
+                sectorElement.children[1].textContent = "CLEAR";
+                sectorElement.children[1].className = "green";
+            }
+    }
     for (const message of raceControlMessages) {
         if (pastRaceControlMessages.includes(JSON.stringify(message))) continue;
-
-        pastRaceControlMessages.push(JSON.stringify(message));
-
-        if (message.Category === "Flag" && message.Scope === "Track" && message.Flag === "CLEAR") {
+        if(message.Scope !== "Sector"){
+            pastRaceControlMessages.push(JSON.stringify(message));
+        }
+        if ((message.Category === "Flag" && message.Scope === "Track" && message.Flag === "CLEAR")) {
             const allSectorElements = document.getElementsByClassName("status");
 
             for (const sectorElement of allSectorElements) {
@@ -88,13 +96,13 @@ function setTrackSector() {
                 sectorElement.children[1].className = "green";
             }
         }
-
         if (
             (message.Category !== "Flag" || message.Scope !== "Sector") &&
             message.SubCategory !== "TrackSurfaceSlippery"
-        )
+        ){
             continue;
-
+        }
+        
         let sector = message.Sector;
 
         let flag = message.Flag;
@@ -103,7 +111,6 @@ function setTrackSector() {
             sector = message.Message.match(/(\d+)/)[0];
             flag = "SLIPPERY";
         }
-
         let color = "green";
         switch (flag) {
             case "YELLOW":
@@ -115,7 +122,6 @@ function setTrackSector() {
             case "SLIPPERY":
                 color = "slippery";
         }
-
         const sectorElement = document.getElementById(`sector${sector}`);
         sectorElement.textContent = flag;
         sectorElement.className = color;
@@ -128,8 +134,8 @@ async function run() {
     await addTrackSectors();
     setInterval(async () => {
         await apiRequests();
-        setFullStatus();
         setTrackSector();
+        setFullStatus();
     }, 500);
 }
 
